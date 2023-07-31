@@ -1,81 +1,84 @@
 import express from 'express'
 
-import dataNotes from '../dataNotes';
-import { separateAndCountByCategory } from '../separateAndCountByCategory';
+import notesService from '../services/notesService';
+import { noteSchema } from '../note'
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  const allNotes = dataNotes.notes;
-  res.status(200).json(allNotes);
-});
+router.get("/", async (req, res, next) => {
+  try {
+    const notes = await notesService.getAllNotes();
 
-router.post("/", (req, res) => {
-  const { content, category, name } = req.body;
-  if (!content || !category || !name) {
-    return res.status(400).json({ error: "Please provide all the required fields (Name, Date, Category, Content)." });
+    res.status(200).json(notes);
+    next();
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
-
-  const newNote = {
-    content,
-    category,
-    name,
-  };
-
-  dataNotes.notes.push(newNote);
-
-  res.status(201).json(newNote);
 });
 
-router.delete("/:id", (req, res) => {
-    const id = req.params.id;
+router.post("/", async (req, res, next) => {
+  try {
+    const newNote = await notesService.addNote(req.body);
 
-    const noteIdx = dataNotes.notes.findIndex((note) => note.id === id);
-    
-    if (noteIdx === -1) {
-        return res.status(400).json({ error: "Note not found" });
-    };
-    const deletedNote = dataNotes.notes[noteIdx];
-    dataNotes.notes.splice(noteIdx, 1);
-    res.status(200).json(deletedNote);
+    res.status(201).json(newNote);
+    next();
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+    next();
+  }
 });
 
-router.patch("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
+  try {
     const id = req.params.id;
-    const { content, category, name, isArchived } = req.body;
+    notesService.deleteNote(id);
 
-    const noteIdx = dataNotes.notes.findIndex((note) => note.id === id);
-    
-    if (noteIdx === -1) {
-        return res.status(400).json({ error: "Note not found" });
-    };
+    res.status(200).json("Success");
+    next();
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    next();
+  }
+});
 
-    const editedNote = {...dataNotes.notes[noteIdx], content, category, name, isArchived};
+router.patch("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const editedNote = await notesService.editNote(id, req.body);
 
-    dataNotes.notes.splice(noteIdx, 1, editedNote);
     res.status(201).json(editedNote);
+    next();
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+    next();
+  }
 });
 
-router.get("/stats", (req, res) => {
-    const stats = separateAndCountByCategory(dataNotes.notes);
+router.get("/stats", async (req, res, next) => {
+  try {
+    const stats = await notesService.getStats();
 
-    if (!stats) {
-        return res.status(400).json({ error: "No stats found." });
-    }
     res.status(200).json(stats);
-});
-
-router.get("/:id", (req, res) => {
-    const id = req.params.id;
-
-    const noteIdx = dataNotes.notes.findIndex((note) => note.id === id);
-    // res.send(noteIdx);
     
-    if (noteIdx === -1) {
-        return res.status(400).json({ error: "Note not found" });
-    };
-
-    res.status(200).json(dataNotes.notes[noteIdx]);
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Stats not found" })
+    next();
+  }
 });
+
+router.get("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const note = await notesService.getOneNote(id);
+    res.status(200).json(note);
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Note not found" });
+    next(error);
+  }
+});
+
 
 export { router as notesRouter };

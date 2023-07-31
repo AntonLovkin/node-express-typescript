@@ -1,4 +1,4 @@
-import { NoteI } from "./types";
+import { NoteI } from "../types";
 
 interface CategoryCount {
   category: string;
