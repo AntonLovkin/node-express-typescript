@@ -1,6 +1,5 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
-// import bodyParser from 'body-parser';
 import cors from "cors";
 
 import { notesRouter } from './src/routes/notesRoutes';
@@ -8,11 +7,11 @@ import { notesRouter } from './src/routes/notesRoutes';
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT;
+// const port = process.env.PORT;
+const port = 8000;
 
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('dist'));
 app.use('/notes', notesRouter);
