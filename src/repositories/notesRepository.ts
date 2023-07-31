@@ -23,15 +23,21 @@ async function createNote(data: AddNoteI) {
 
 async function editNote(data: EditNoteI, index: number) {
     const { content, category, name, isArchived } = data;
+    if (isArchived !== undefined) {
+        return {
+            ...dataNotes.notes[index],
+            isArchived,
+            editedAt: new Date(),
+        };
+    }
     return {
         ...dataNotes.notes[index],
         content,
         category,
         name,
-        isArchived,
         dates: getDatesFromNote(data.content) || "no dates",
         editedAt: new Date(),
-    };
+    }
 }
 
 async function deleteNote(index: number) {

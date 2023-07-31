@@ -11,6 +11,6 @@ const noteSchema = object({
   name: string().required(),
   dates: string().required(),
   isArchived: boolean().required(),
-}).strict();
+})
 
 export { noteSchema, NoteSchemaType };

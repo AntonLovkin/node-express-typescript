@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
   } catch (error) {
     const errorMessage: string = error instanceof Error ? error.message : "Unknown error";
     const errorResponse: ErrorResponse = { error: errorMessage };
-    res.status(500).json(errorResponse);
+    res.status(400).json(errorResponse);
   }
 });
 
@@ -57,7 +57,7 @@ router.patch("/:id", async (req, res) => {
   } catch (error) {
     const errorMessage: string = error instanceof Error ? error.message : "Unknown error";
     const errorResponse: ErrorResponse = { error: errorMessage };
-    res.status(500).json(errorResponse);
+    res.status(400).json(errorResponse);
   }
 });
 
@@ -70,7 +70,7 @@ router.get("/stats", async (req, res) => {
   } catch (error) {
     const errorMessage: string = error instanceof Error ? error.message : "Unknown error";
     const errorResponse: ErrorResponse = { error: errorMessage };
-    res.status(400).json(errorResponse);
+    res.status(500).json(errorResponse);
   }
 });
 

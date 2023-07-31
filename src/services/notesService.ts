@@ -11,7 +11,6 @@ const addNote = async (data: NoteSchemaType) => {
     const newNote = await notesRepository.createNote(data);
 
     await noteSchema.validate(newNote);
-    console.log(newNote)
    
     dataNotes.notes.push(newNote);
     return newNote;
@@ -35,7 +34,7 @@ const editNote = async (id: string, reqBody: AddNoteI) => {
     }
 
     const editedNote = await notesRepository.editNote(reqBody, noteIdx);
-    console.log(editedNote)
+    
     await noteSchema.validate(editedNote);
     await notesRepository.updateNoteById(noteIdx, editedNote);
     return editedNote;
