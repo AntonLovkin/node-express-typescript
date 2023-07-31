@@ -7,7 +7,8 @@ import { notesRouter } from './src/routes/notesRoutes';
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT;
+// const port = process.env.PORT;
+const port = 8000;
 
 app.use(cors());
 app.use(express.json());
