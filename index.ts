@@ -7,8 +7,7 @@ import { notesRouter } from './src/routes/notesRoutes';
 dotenv.config();
 
 const app: Express = express();
-// const port = process.env.PORT;
-const port = 8000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
@@ -16,7 +15,7 @@ app.use(express.json());
 app.use(express.static('dist'));
 app.use('/notes', notesRouter);
 
-app.listen(port, () => {
+app.listen(8000, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
