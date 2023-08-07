@@ -8,11 +8,11 @@ interface CategoryCount {
 
 export function separateAndCountByCategory(data: NoteI[]): CategoryCount[] {
   const categoryCounts: CategoryCount[] = data.reduce((acc: CategoryCount[], item: NoteI) => {
-    const { category, isArchived } = item;
+    const { category, is_archived } = item;
     const existingCategory = acc.find((c) => c.category === category);
 
     if (existingCategory) {
-      if (isArchived) {
+      if (is_archived) {
         existingCategory.archived++;
       } else {
         existingCategory.active++;
@@ -20,8 +20,8 @@ export function separateAndCountByCategory(data: NoteI[]): CategoryCount[] {
     } else {
       const newCategory: CategoryCount = {
         category,
-        active: isArchived ? 0 : 1,
-        archived: isArchived ? 1 : 0,
+        active: is_archived ? 0 : 1,
+        archived: is_archived ? 1 : 0,
       };
       acc.push(newCategory);
     }
