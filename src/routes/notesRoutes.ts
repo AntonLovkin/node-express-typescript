@@ -36,9 +36,9 @@ router.post("/", async (req, res) => {
 router.delete("/:id", (req, res) => {
   try {
     const id = req.params.id;
-    notesService.deleteNote(id);
+    const result = notesService.deleteNote(id);
 
-    res.status(200).json("Success");
+    res.status(200).json(result);
      
   } catch (error) {
     const errorMessage: string = error instanceof Error ? error.message : "Unknown error";
@@ -52,6 +52,7 @@ router.patch("/:id", async (req, res) => {
     const id = req.params.id;
     const editedNote = await notesService.editNote(id, req.body);
 
+    if (!editedNote) { throw Error };
     res.status(201).json(editedNote);
      
   } catch (error) {
@@ -78,6 +79,9 @@ router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const note = await notesService.getOneNote(id);
+    if (!note) {
+      throw Error
+    }
     res.status(200).json(note);
      
   } catch (error) {
