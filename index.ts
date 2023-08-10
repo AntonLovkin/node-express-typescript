@@ -24,7 +24,7 @@ dotenv.config();
 
 export const connection: ConnectionConfig = {
   user:'postgres',
-  host:'127.0.0.1',
+  host:'postgres-db',
   database:'sequelize_db',
   password:'password',
   port:5432,
@@ -32,7 +32,7 @@ export const connection: ConnectionConfig = {
 
 const app: Express = express();
 const port = process.env.PORT;
-// console.log(port)
+console.log(port)
 app.use(cors());
 app.use(express.json());
 
