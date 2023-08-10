@@ -33,11 +33,10 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const result = notesService.deleteNote(id);
-
+    const result =await notesService.deleteNote(id);
     res.status(200).json(result);
      
   } catch (error) {

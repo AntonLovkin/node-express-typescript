@@ -16,7 +16,7 @@ const addNote = async (data: NoteSchemaType) => {
 
 const deleteNote = async(id: string) => {
     const message = await notesRepository.deleteNote(id);
-
+    
     return message;
 }
 
