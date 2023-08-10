@@ -1,7 +1,7 @@
 version: "3"
 services:
   nodejs-app:
-    build: .
+    build: ./
     container_name: my-nodejs-app
     ports:
       - 8000:8000
@@ -12,7 +12,7 @@ services:
     image: postgres:latest
     container_name: my-postgres-db
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: sequelize_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:

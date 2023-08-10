@@ -1,6 +1,8 @@
 'use strict';
-import { Model } from 'sequelize';
-export default (sequelize, DataTypes) => {
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
   class Note extends Model {
     /**
      * Helper method for defining associations.
@@ -13,10 +15,13 @@ export default (sequelize, DataTypes) => {
   }
   Note.init({
     name: DataTypes.STRING,
-    context: DataTypes.STRING,
-    categories: DataTypes.STRING,
+    content: DataTypes.STRING,
+    category: DataTypes.STRING,
     dates: DataTypes.STRING,
-    is_archived: DataTypes.BOOLEAN
+    is_archived: DataTypes.BOOLEAN,
+    id: DataTypes.UUID,
+    created_at: DataTypes.DATE,
+    edited_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Note',

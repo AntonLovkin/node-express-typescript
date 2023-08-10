@@ -4,6 +4,11 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "make-modal": "npx sequelize-cli model:generate --name Note --attributes name:string,content:string,category:string,dates:string,is_archived:boolean,id:uuid,created_at:date,edited_at:date",
+    "migrate": "npx sequelize-cli db:migrate",
+    "down": "npx sequelize-cli db:migrate:undo",
+    "make-seed": "npx sequelize-cli seed:generate --name demo-notes",
+    "seed": "npx sequelize-cli db:seed:all",
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
@@ -26,7 +31,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.4.9",
     "@types/pg": "^8.10.2",
     "concurrently": "^8.2.0",
     "nodemon": "^3.0.1",

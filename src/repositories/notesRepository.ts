@@ -4,14 +4,7 @@ import getDatesFromNote from "../helpers/getDatesFromNote";
 import { separateAndCountByCategory } from '../helpers/separateAndCountByCategory';
 import { NoteI, AddNoteI, EditNoteI } from "../types";
 import { Client } from 'pg';
-
-const connection = {
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'password',
-  port: 5432,
-};
+import { connection } from '../../index';
 
 async function getAllNotes() {
     const client = new Client(connection)
