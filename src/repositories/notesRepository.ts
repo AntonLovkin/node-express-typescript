@@ -4,14 +4,7 @@ import getDatesFromNote from "../helpers/getDatesFromNote";
 import { separateAndCountByCategory } from '../helpers/separateAndCountByCategory';
 import { NoteI, AddNoteI, EditNoteI } from "../types";
 import { Client } from 'pg';
-
-const connection = {
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'password',
-  port: 5432,
-};
+import { connection } from '../../index';
 
 async function getAllNotes() {
     const client = new Client(connection)
@@ -91,18 +84,17 @@ async function editNote(id: string, updatedFields: EditNoteI) {
     const values = columnsToUpdate.map((column) => updatedFields[column as keyof EditNoteI]);
 
     const query = `UPDATE notes SET ${columnsToUpdate.map((col, index) => `${col} = $${index + 2}`).join(', ')} WHERE id = $1`;
-    await client.query(query, [id, ...values]);
-
-    console.log('Note updated successfully');
+    const res = await client.query(query, [id, ...values]);
+    if (!res.rowCount) {
+      throw Error("Note not found");
+    }
     return 'Note updated successfully';
   } catch (error) {
-    console.error('Error updating note:', error);
     throw error;
   } finally {
     await client.end();
   }
 }
-
 
 async function deleteNote(id: string) {
     const client = new Client(connection)
@@ -110,13 +102,12 @@ async function deleteNote(id: string) {
     await client.connect();
 
     const query = 'DELETE FROM notes WHERE id = $1';
-    await client.query(query, [id]);
-
-      console.log('Note deleted successfully');
-      return 'Note deleted successfully'
-
+    const res = await client.query(query, [id]);
+    if (!res.rowCount) {
+      throw Error("Note not found");
+    }
+    return 'Note deleted successfully'
   } catch (error) {
-    console.error('Error deleting note:', error);
     throw error;
   } finally {
     await client.end();
