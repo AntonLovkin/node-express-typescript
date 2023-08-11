@@ -24,7 +24,8 @@ dotenv.config();
 
 export const connection: ConnectionConfig = {
   user:'postgres',
-  host:'postgres-db',
+  host: 'postgres-db', // for running app using docker
+  // host:'localhost', // for running app locally
   database:'sequelize_db',
   password:'password',
   port:5432,
